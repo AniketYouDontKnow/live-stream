@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Live Stream</title>
+  <meta charset="UTF-8" />
+  <title>Secure Live Stream</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
     body {
@@ -18,22 +18,26 @@
       max-width: 1080px;
       border: 2px solid #00ffcc;
       border-radius: 10px;
+      background: #000;
     }
   </style>
 </head>
 <body>
-  <video id="video" controls autoplay></video>
+  <video id="video" controls muted playsinline></video>
 
   <script>
     const video = document.getElementById('video');
-    const streamURL = "https://sonydaimenew.akamaized.net/hls/live/2037140/DAI20ME-V3/master_mdh.m3u8?hdnea=exp=1750529951~acl=/*~id=86812195169790451322485418609230~hmac=b4dad9dada9abad9867ee8fa2e057fb124a1aa3a42d5c80cc47588f6ea0291df"; // full link
+    const streamURL = "https://sonydaimenew.akamaized.net/hls/live/2037140/DAI20ME-V3/master_mdh.m3u8?hdnea=exp=1750529951~acl=/*~id=86812195169790451322485418609230~hmac=b4dad9dada9abad9867ee8fa2e057fb124a1aa3a42d5c80cc47588f6ea0291df";
 
     if (Hls.isSupported()) {
       const hls = new Hls();
       hls.loadSource(streamURL);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, function () {
-        video.play();
+        document.body.addEventListener('click', () => {
+          video.muted = false;
+          video.play();
+        }, { once: true });
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = streamURL;
